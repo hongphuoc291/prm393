@@ -1,3 +1,4 @@
+import 'package:demowidget/Views/Pages/HomePage.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,7 +14,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
+     home: const Homepage(),
+     /* home: Scaffold(
         appBar: AppBar(
           title: Text("Home Page"),
           backgroundColor: Colors.pink[200],
@@ -80,7 +82,7 @@ class MyApp extends StatelessWidget {
         //     ),
         //   ),
         // ),
-      ),
+      ),*/
     );
   }
 }
