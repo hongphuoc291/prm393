@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:demowidget/Widgets/ProductWidget.dart';
 
 class Homepage extends StatelessWidget{
   const Homepage({super.key});
@@ -28,12 +29,13 @@ class Homepage extends StatelessWidget{
           ),
         ],
       ),
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: double.infinity,
-        child: Image.asset("assets/images/phuoc.jpg", fit: BoxFit.contain,),
-
-      ),
+      // body: Container(
+      //   height: MediaQuery.of(context).size.height,
+      //   width: double.infinity,
+      //   child: Image.asset("assets/images/phuoc.jpg", fit: BoxFit.contain,),
+      //
+      // ),
+      body: const ProductListWidget(),
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(

@@ -1,4 +1,5 @@
 import 'package:demowidget/Views/Pages/HomePage.dart';
+import 'package:demowidget/Widgets/ProductWidget.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -15,7 +16,19 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
      home: const Homepage(),
-     /* home: Scaffold(
+
+
+
+
+
+
+
+
+
+
+
+
+      /* home: Scaffold(
         appBar: AppBar(
           title: Text("Home Page"),
           backgroundColor: Colors.pink[200],
