@@ -5,15 +5,14 @@ class CoreWidgets extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Scaffold(
+
+      return Scaffold(
         appBar: AppBar(title: Text("Exercise 1 – Core Widgets")),
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
+               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
                   "Welcome to Flutter UI",
@@ -21,16 +20,19 @@ class CoreWidgets extends StatelessWidget {
                 ),
               ),
 
-              Center(child: Icon(Icons.movie, size: 80, color: Colors.blue)),
-              Image.asset(
-                'assets/images/baohong.jpg',
-                height: 200,
-                width: double.infinity,
-                fit: BoxFit.cover,
+               Center(child: Icon(Icons.movie, size: 80, color: Colors.blue)),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Image.network(
+                  'https://phunuvietnam.mediacdn.vn/179072216278405120/2022/6/1/pororo-chim-canh-cut-be-nho-1-16540543152581223190933.jpg',
+                  height: 250,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
               ),
 
               Card(
-                margin: EdgeInsets.all(16),
+                margin: EdgeInsets.all(10),
                 child: ListTile(
                   leading: Icon(Icons.star),
                   title: Text("Movie Item"),
@@ -40,7 +42,7 @@ class CoreWidgets extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
+      );
+
   }
 }
