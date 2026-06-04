@@ -1,9 +1,24 @@
+import 'package:demowidget/Views/Pages/AboutPage.dart';
 import 'package:flutter/material.dart';
 import 'package:demowidget/Widgets/ProductWidget.dart';
 
-class Homepage extends StatelessWidget{
+class Homepage extends StatefulWidget{
   const Homepage({super.key});
+
+  @override
+  State<Homepage> createState() => _HomepageState();
+}
+
+class _HomepageState extends State<Homepage> {
+  int _selectedIndex = 0;
+
+  AboutOnPress( BuildContext context){
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => AboutPage()));
+  }
+
   void onPress() {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -11,22 +26,17 @@ class Homepage extends StatelessWidget{
         title: Text("Home Page"),
         backgroundColor: Colors.pink[200],
         leading: IconButton(
-          onPressed: onPress,
-          icon: Icon(Icons.menu),
+          onPressed: (){
+            Navigator.pushNamed(context, '/about');
+          },
+          icon: const Icon(Icons.account_box_outlined),
         ),
         actions: [
           IconButton(
             onPressed: onPress,
             icon: Icon(Icons.search),
           ),
-          IconButton(
-            onPressed: onPress,
-            icon: Icon(Icons.fastfood),
-          ),
-          IconButton(
-            onPressed: onPress,
-            icon: Icon(Icons.face),
-          ),
+
         ],
       ),
       // body: Container(
@@ -35,20 +45,27 @@ class Homepage extends StatelessWidget{
       //   child: Image.asset("assets/images/phuoc.jpg", fit: BoxFit.contain,),
       //
       // ),
-      body: const ProductListWidget(),
+      body: [ProductListWidget(),
+        Center(child: Text("About")),
+        Center(child: Text("Detail product"))
+      ][_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: (index){setState(() {
+          _selectedIndex=index;
+        });},
         items: [
           BottomNavigationBarItem(
             label: "Home",
             icon: Icon(Icons.home),
           ),
           BottomNavigationBarItem(
-            label: "Settings",
-            icon: Icon(Icons.settings, color: Colors.purple,),
+            label: "About",
+            icon: Icon(Icons.account_box_outlined, color: Colors.purple,),
           ),
           BottomNavigationBarItem(
-            label: "Favorite",
-            icon: Icon(Icons.favorite, color: Colors.pink,),
+            label: "Detail product",
+            icon: Icon(Icons.details, color: Colors.pink,),
           ),
         ],
       ),

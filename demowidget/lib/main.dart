@@ -1,21 +1,19 @@
-import 'package:demowidget/Views/Pages/HomePage.dart';
-import 'package:demowidget/Widgets/ProductWidget.dart';
 import 'package:flutter/material.dart';
+import 'package:demowidget/Views/Pages/HomePage.dart';
+import 'package:demowidget/Views/Pages/AboutPage.dart';
 
 void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  void onPress() {}
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
+  runApp(
+    MaterialApp(
       debugShowCheckedModeBanner: false,
-     home: const Homepage(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const Homepage(),
+        '/about': (context) => const AboutPage(),
+      },
+    ),
+  );
+
 
 
 
@@ -96,9 +94,9 @@ class MyApp extends StatelessWidget {
         //   ),
         // ),
       ),*/
-    );
+
   }
-}
+
 
 /*
 class MyApp extends StatelessWidget {
