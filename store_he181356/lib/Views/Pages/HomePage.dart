@@ -13,8 +13,9 @@ class _HomepageState extends State<Homepage> {
   int _selectedIndex = 0;
 
   final List<Widget> pages = [
-    ProductListWidget(),
-    const ProductDetailPage(),
+    const ProductListWidget(),
+    const Center(child: Text("Detail")),
+    const Center(child: Text("Cart")),
   ];
 
   void _onItemTapped(int index) {
@@ -30,14 +31,9 @@ class _HomepageState extends State<Homepage> {
         title: const Text("Products"),
         centerTitle: true,
         backgroundColor: Colors.blue,
-        titleTextStyle: const TextStyle(
-          color: Colors.white,
-          fontSize: 20,
-        ),
+        foregroundColor: Colors.white,
       ),
-
       body: pages[_selectedIndex],
-
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,

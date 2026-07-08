@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:store_he181356/Entity/Product.dart';
+import 'package:store_he181356/Views/Pages/ProductDetailPage.dart';
+import 'package:store_he181356/Reposistory/ProductDAO.dart';
+
+
 
 class ProductListWidget extends StatefulWidget {
   const ProductListWidget({super.key});
@@ -9,128 +13,78 @@ class ProductListWidget extends StatefulWidget {
 }
 
 class _ProductListWidgetState extends State<ProductListWidget> {
-  final TextEditingController _searchController = TextEditingController();
-
-  final List<Product> allProducts = Product.products;
+  final ProductDAO _productDAO = ProductDAO(Product.products);
   List<Product> filteredProducts = [];
 
   @override
   void initState() {
     super.initState();
-    filteredProducts = allProducts;
+    filteredProducts = _productDAO.getAllProduct();
   }
 
   void _search(String keyword) {
     setState(() {
-      filteredProducts = allProducts.where((p) {
-        return p.name.toLowerCase().contains(keyword.toLowerCase());
-      }).toList();
+      filteredProducts = _productDAO.findProductByName(keyword);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(12),
-          child: TextField(
-            controller: _searchController,
-            onChanged: _search,
-            decoration: InputDecoration(
-              hintText: "Search product...",
-              prefixIcon: const Icon(Icons.search),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(12),
+            child: TextField(
+              onChanged: _search,
+              decoration: InputDecoration(
+                hintText: "Search product...",
+                prefixIcon: const Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
             ),
           ),
-        ),
 
-        Expanded(
-          child: LayoutBuilder(
+          LayoutBuilder(
             builder: (context, constraints) {
-              final isLandscape =
-                  MediaQuery.of(context).orientation == Orientation.landscape;
-
-              final crossAxisCount = isLandscape ? 2 : 1;
-
-              return GridView.builder(
-                itemCount: filteredProducts.length,
-                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: crossAxisCount,
-                  crossAxisSpacing: 8,
-                  mainAxisSpacing: 8,
-                  childAspectRatio: isLandscape ? 3.2 : 3.8,
-                ),
-                itemBuilder: (context, index) {
-                  return Productwidget(product: filteredProducts[index]);
-                },
+              return Wrap(
+                children: filteredProducts.map((product) {
+                  return SizedBox(
+                    width: MediaQuery.of(context).size.width < 700
+                        ? MediaQuery.of(context).size.width
+                        : MediaQuery.of(context).size.width / 2,
+                    child: ProductWidget(product: product),
+                  );
+                }).toList(),
               );
             },
           ),
-        ),
-      ],
+
+          const SizedBox(height: 16),
+        ],
+      ),
     );
   }
 }
 
-class Productwidget extends StatelessWidget {
+class ProductWidget extends StatelessWidget {
   final Product product;
 
-  const Productwidget({
-    super.key,
-    required this.product,
-  });
+  const ProductWidget({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       elevation: 3,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
       child: InkWell(
-        borderRadius: BorderRadius.circular(12),
         onTap: () {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => Scaffold(
-                appBar: AppBar(
-                  title: Text(product.name),
-                ),
-                body: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Product Detail: ${product.name}",
-                        style: const TextStyle(fontSize: 18),
-                      ),
-
-                      const SizedBox(height: 10),
-
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            Icons.star,
-                            color: Colors.yellow,
-                          ),
-                          const SizedBox(width: 4),
-                          Text(
-                            "${product.starNumber}",
-                            style: const TextStyle(fontSize: 18),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              builder: (context) => ProductDetailPage(product: product),
             ),
           );
         },
@@ -148,60 +102,38 @@ class Productwidget extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
               ),
-
               const SizedBox(width: 12),
-
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       product.name,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                     ),
-
                     const SizedBox(height: 6),
-
                     Row(
                       children: [
                         Text(
-                          "\$${(product.price + 100).toStringAsFixed(0)}",
-                          style: const TextStyle(
-                            fontSize: 13,
-                          ),
+                          "\$${(product.price).toStringAsFixed(0)}",
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          "\$${product.price}",
-                          style: const TextStyle(
-                            fontSize: 15,
-                            color: Colors.red,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          "\$${(product.price * (1 - product.discountPercen / 100)).toStringAsFixed(0)}",
                         ),
                       ],
                     ),
                   ],
                 ),
               ),
-
               Container(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 6, vertical: 3),
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
                 decoration: BoxDecoration(
                   color: Colors.red,
-                  borderRadius: BorderRadius.circular(6),
                 ),
                 child: Text(
                   "-${product.discountPercen}%",
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 11,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.bold),
                 ),
               ),
             ],

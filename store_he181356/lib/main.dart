@@ -8,7 +8,6 @@ void main() {
       initialRoute: '/',
       routes: {
         '/': (context) => const Homepage(),
-        '/detail': (context) => const ProductDetailPage(),
       },
     ),
   );

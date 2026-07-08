@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 
 class Product {
-  final String name;
-  final String id;
+  final String? name;
+  final String? id;
   final String? image;
-  double price;
+  double? price;
   Product({
     required this.name,
     required this.id,
