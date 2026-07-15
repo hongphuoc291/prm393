@@ -273,51 +273,62 @@ class _UserListScreenState extends ConsumerState<UserListScreen> {
     final isValid = _formKey.currentState?.validate() ?? false;
 
     if (!isValid) {
-      if (_editingUser != null) {
-        _fullNameController.clear();
-        _avatarController.clear();
-        setState(() {});
-      }
-
       return;
     }
 
+    final isEditing = _editingUser != null;
     final fullName = _fullNameController.text.trim();
     final email = _emailController.text.trim();
     final avatar = _avatarController.text.trim();
 
-    final notifier = ref.read(
-      userViewModelProvider.notifier,
-    );
-
-    if (_editingUser == null) {
-      await notifier.addUser(
-        fullName: fullName,
-        email: email,
-        avatar: avatar,
+    try {
+      final notifier = ref.read(
+        userViewModelProvider.notifier,
       );
-    } else {
-      await notifier.updateUser(
-        _editingUser!.copyWith(
+
+      if (isEditing) {
+        await notifier.updateUser(
+          _editingUser!.copyWith(
+            fullName: fullName,
+            email: email,
+            avatar: avatar,
+          ),
+        );
+      } else {
+        await notifier.addUser(
           fullName: fullName,
           email: email,
           avatar: avatar,
+        );
+      }
+
+      if (!mounted) {
+        return;
+      }
+
+      _formKey.currentState?.reset();
+      _fullNameController.clear();
+      _emailController.clear();
+      _avatarController.clear();
+
+      setState(() {
+        _editingUser = null;
+      });
+
+     
+    } catch (error) {
+      if (!mounted) {
+        return;
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Không thể lưu người dùng: $error',
+          ),
         ),
       );
     }
-
-    if (!mounted) {
-      return;
-    }
-
-    _formKey.currentState?.reset();
-    _fullNameController.clear();
-    _emailController.clear();
-    _avatarController.clear();
-
-    setState(() {
-      _editingUser = null;
-    });
   }
 
   void _startEdit(UserModel user) {

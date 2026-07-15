@@ -4,7 +4,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'screens/user_list_screen.dart';
 
 void main() {
-  runApp(const ProviderScope(child: UserManagerApp()));
+  WidgetsFlutterBinding.ensureInitialized();
+
+  runApp(
+    const ProviderScope(
+      child: UserManagerApp(),
+    ),
+  );
 }
 
 class UserManagerApp extends StatelessWidget {

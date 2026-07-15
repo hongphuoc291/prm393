@@ -24,4 +24,21 @@ class UserModel {
       avatar: avatar ?? this.avatar,
     );
   }
+
+  factory UserModel.fromMap(Map<String, Object?> map) {
+    return UserModel(
+      id: map['id'] as int,
+      fullName: map['full_name'] as String,
+      email: map['email'] as String,
+      avatar: map['avatar'] as String,
+    );
+  }
+
+  Map<String, Object?> toMap() {
+    return <String, Object?>{
+      'full_name': fullName,
+      'email': email,
+      'avatar': avatar,
+    };
+  }
 }
